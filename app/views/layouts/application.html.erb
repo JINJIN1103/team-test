@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bookers2</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+   <header>
+     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+       <div class="container">
+
+       <a href="/">
+         <span class="navbar-brand">Bookers</span>
+       </a>
+
+       <!--要件にaタグで書くよう指示があったためコメントアウトし上記aタグ作成-->
+       <%# link_to("Bookers","/",  {class: "navbar-brand"}) %>
+       <!--課題3合格済-->
+
+       <div class="collapse navbar-collapse">
+    <ul class="navbar-nav ml-auto">
+    <% if user_signed_in? %>
+     <li>
+        <%= link_to("Home", user_path(current_user.id),{class: "fas fa-home nav-link text-light"}) %>
+      </li>
+     <li>
+        <%= link_to("Users", users_path, {class: "fas fa-users nav-link text-light"}) %>
+      </li>
+     <li>
+        <%= link_to("Books", '/books',{class: "fas fa-book-open nav-link text-light"}) %>
+      </li>
+      <li>
+        <%= link_to("logout", destroy_user_session_path, {method: :delete,class: "fas fa-sign-out-alt nav-link text-light"}) %>
+      </li>
+    <% else %>
+      <li>
+      <%= link_to("Home", "/",{class: "fas fa-home nav-link text-light"} )%>
+      </li>
+      <li>
+        <%= link_to("About", about_path,{class: "fas fa-link nav-link text-light"} )%>
+      </li>
+      <li>
+     <%= link_to("sign up", new_user_registration_path,{class: "fas fa-user-plus nav-link text-light"} )%>
+      </li>
+      <li>
+        <%= link_to("login", new_user_session_path,{class: "fas fa-sign-in-alt nav-link text-light"} )%>
+      </li>
+    <% end %>
+    </ul>
+    </div>
+    </div>
+        </nav>
+        
+<% if user_signed_in? %>
+　<div class="serchbar">
+    <%= form_tag(search_path, method: :get) do %>
+      <%= text_field_tag 'content' %>
+      <%= select_tag 'model', options_for_select({ "User" => "user", "Book" => "book" }) %>
+      <%= select_tag 'method', options_for_select({ "完全一致" => "perfect", "部分一致" => "partial","前方一致"=>"forward","後方一致"=>"backward" }) %>
+      <%= submit_tag '検索' %>
+  </div>
+    <% end %>
+<% end %>
+    </header>
+
+    <main>
+    <% flash.each do |message_type, message|%>
+    <%= content_tag :div, message, class: message_type %>
+    <% end %>
+    <p id="notice"></p>
+      <%= yield %>
+    </main>
+
+    <footer>
+      <div class="container mt-5">
+        <div class="row">
+          <div class="mx-auto">
+            <p>CopyRight Infratop.inc</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

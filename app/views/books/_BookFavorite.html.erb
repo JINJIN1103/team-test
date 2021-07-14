@@ -1,0 +1,11 @@
+        <% if book.favorited_by?(current_user) %>
+          <p class="iine_yame"><%= link_to book_favorites_path(book.id), method: :delete,remote: true do %>
+              ♥<%= book.favorites.count %> いいね
+            <% end %>
+          </p>
+          <% else %>
+          <p class="iine_suru"><%= link_to book_favorites_path(book.id), method: :post,remote: true do %>
+              ♡<%= book.favorites.count %> いいね
+            <% end %>
+          </p>
+        <% end %>
